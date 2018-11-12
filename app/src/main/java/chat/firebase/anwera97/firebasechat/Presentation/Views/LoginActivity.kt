@@ -1,10 +1,10 @@
-package chat.firebase.anwera97.firebasechat.Views
+package chat.firebase.anwera97.firebasechat.Presentation.Views
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import chat.firebase.anwera97.firebasechat.Presenters.LoginPresenter
+import chat.firebase.anwera97.firebasechat.Presentation.Presenters.LoginPresenter
 import chat.firebase.anwera97.firebasechat.R
 import chat.firebase.anwera97.firebasechat.Utils.StringUtils
 import kotlinx.android.synthetic.main.activity_login.*
@@ -19,6 +19,10 @@ class LoginActivity : AppCompatActivity(), LoginPresenter.LoginDelegate {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        if (mPresenter.doLogin()) {
+            correctLogin()
+        }
 
         email_sign_in_button.setOnClickListener { tryLogin() }
     }
@@ -43,7 +47,7 @@ class LoginActivity : AppCompatActivity(), LoginPresenter.LoginDelegate {
     }
 
     override fun correctLogin() {
-        val intent = Intent(this, ChatsActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 

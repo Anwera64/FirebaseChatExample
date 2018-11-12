@@ -1,6 +1,5 @@
-package chat.firebase.anwera97.firebasechat.Presenters
+package chat.firebase.anwera97.firebasechat.Presentation.Presenters
 
-import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginPresenter(val view: LoginDelegate) {
