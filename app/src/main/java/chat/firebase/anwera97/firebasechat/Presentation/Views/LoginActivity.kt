@@ -1,5 +1,6 @@
 package chat.firebase.anwera97.firebasechat.Presentation.Views
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -46,7 +47,7 @@ class LoginActivity : AppCompatActivity(), LoginPresenter.LoginDelegate {
         return result
     }
 
-    override fun correctLogin() {
+    private fun correctLogin() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
@@ -55,5 +56,15 @@ class LoginActivity : AppCompatActivity(), LoginPresenter.LoginDelegate {
         Log.e("Login error:", message)
     }
 
+    override fun saveType(type: String) {
+        val pref = this.getSharedPreferences(getString(R.string.shared_preferences), Context.MODE_PRIVATE) ?: return
+
+        with(pref.edit()) {
+            putString(getString(R.string.saved_type), type)
+            commit()
+        }
+
+        correctLogin()
+    }
 
 }

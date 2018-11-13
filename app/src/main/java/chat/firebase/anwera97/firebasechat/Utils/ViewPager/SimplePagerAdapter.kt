@@ -45,4 +45,10 @@ class SimplePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm),
         return PagerAdapter.POSITION_NONE
     }
 
+    fun removeAllFragments() {
+        fragmentList = ArrayList()
+        titleList = ArrayList()
+        iconList = ArrayList()
+        notifyDataSetChanged()
+    }
 }

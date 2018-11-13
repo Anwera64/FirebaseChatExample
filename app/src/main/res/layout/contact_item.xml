@@ -6,19 +6,6 @@
     android:layout_height="wrap_content"
     android:minHeight="80dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageView"
-        android:layout_width="46dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_contact"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/tvContactName"
         android:layout_width="wrap_content"
@@ -28,7 +15,7 @@
         android:text="Hernan Quintana"
         android:textAlignment="center"
         android:textAppearance="?android:textAppearanceLarge"
-        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -42,7 +29,7 @@
         android:text="Hola!"
         android:textAppearance="?android:textAppearanceSmall"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/circleImageView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvContactName" />
 
 </android.support.constraint.ConstraintLayout>

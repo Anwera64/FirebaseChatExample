@@ -11,4 +11,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="saved_type">User type</string>
+    <string name="shared_preferences">chat.firebase.anwera97.firebasechat</string>
 </resources>
