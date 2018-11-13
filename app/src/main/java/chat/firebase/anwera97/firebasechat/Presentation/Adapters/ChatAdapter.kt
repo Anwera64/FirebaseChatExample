@@ -23,7 +23,7 @@ class ChatAdapter(private val chats: Hashtable<Int, Chat>, val context: Context?
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val chat = chats[p1]!!
         p0.tvName.text = chat.contact.name
-        p0.tvLastText.text = chat.messages.first().detail
+        p0.tvLastText.text = chat.messages.last().detail
     }
 
 
