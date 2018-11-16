@@ -1,4 +1,4 @@
-package chat.firebase.anwera97.firebasechat.Utils.ViewPager
+package chat.firebase.anwera97.firebasechat.utils.viewPager
 
 import android.support.annotation.DrawableRes
 import android.support.design.widget.TabLayout

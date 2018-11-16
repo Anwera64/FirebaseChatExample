@@ -1,13 +1,12 @@
-package chat.firebase.anwera97.firebasechat.Presentation.Views
+package chat.firebase.anwera97.firebasechat.presentation.views
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.text.Editable
 import android.view.MenuItem
-import chat.firebase.anwera97.firebasechat.Data.Message
-import chat.firebase.anwera97.firebasechat.Presentation.Adapters.MessageAdapter
-import chat.firebase.anwera97.firebasechat.Presentation.Presenters.ChatPresenter
+import chat.firebase.anwera97.firebasechat.data.Message
+import chat.firebase.anwera97.firebasechat.presentation.adapters.MessageAdapter
+import chat.firebase.anwera97.firebasechat.presentation.presenters.ChatPresenter
 import chat.firebase.anwera97.firebasechat.R
 import kotlinx.android.synthetic.main.activity_chat.*
 
@@ -22,7 +21,6 @@ class ChatActivity: AppCompatActivity(), ChatPresenter.ChatDelegate {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        val intent = getIntent()
         val chatId = intent.getStringExtra("chatID")
 
         mPresenter = ChatPresenter(this, chatId)

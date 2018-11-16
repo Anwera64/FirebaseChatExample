@@ -1,11 +1,11 @@
-package chat.firebase.anwera97.firebasechat.Presentation.Views
+package chat.firebase.anwera97.firebasechat.presentation.views
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import chat.firebase.anwera97.firebasechat.R
-import chat.firebase.anwera97.firebasechat.Utils.ViewPager.SimplePagerAdapter
-import chat.firebase.anwera97.firebasechat.Utils.ViewPager.TabLayoutHelper
+import chat.firebase.anwera97.firebasechat.utils.viewPager.SimplePagerAdapter
+import chat.firebase.anwera97.firebasechat.utils.viewPager.TabLayoutHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

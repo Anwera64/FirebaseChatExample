@@ -1,13 +1,13 @@
-package chat.firebase.anwera97.firebasechat.Presentation.Views
+package chat.firebase.anwera97.firebasechat.presentation.views
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import chat.firebase.anwera97.firebasechat.Presentation.Presenters.LoginPresenter
+import chat.firebase.anwera97.firebasechat.presentation.presenters.LoginPresenter
 import chat.firebase.anwera97.firebasechat.R
-import chat.firebase.anwera97.firebasechat.Utils.StringUtils
+import chat.firebase.anwera97.firebasechat.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**

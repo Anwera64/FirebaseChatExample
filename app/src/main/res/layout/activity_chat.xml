@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/chat_bar"
         android:scrollbars="vertical"
-        tools:listitem="@layout/chat_item_from" />
+        tools:listitem="@layout/item_chat_from" />
 
     <LinearLayout
         android:id="@+id/chat_bar"

@@ -1,4 +1,4 @@
-package chat.firebase.anwera97.firebasechat.Presentation.Views
+package chat.firebase.anwera97.firebasechat.presentation.views
 
 import android.content.Context
 import android.content.Intent
@@ -8,15 +8,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import chat.firebase.anwera97.firebasechat.Data.Chat
-import chat.firebase.anwera97.firebasechat.Presentation.Adapters.ContactAdapter
-import chat.firebase.anwera97.firebasechat.Presentation.Presenters.ChatsPresenter
+import chat.firebase.anwera97.firebasechat.data.Chat
+import chat.firebase.anwera97.firebasechat.presentation.adapters.ChatAdapter
+import chat.firebase.anwera97.firebasechat.presentation.presenters.ChatsPresenter
 import chat.firebase.anwera97.firebasechat.R
-import chat.firebase.anwera97.firebasechat.R.id.recyclerViewChats
-import kotlinx.android.synthetic.main.fragment_chats.*
+import kotlinx.android.synthetic.main.chats_fragment.*
 import java.util.*
 
-class ChatsFragment : Fragment(), ChatsPresenter.ChatsDelegate, ContactAdapter.ContactAdapterDelegate {
+class ChatsFragment : Fragment(), ChatsPresenter.ChatsDelegate, ChatAdapter.ChatAdapterDelegate {
 
     companion object {
         fun newInstance(): ChatsFragment {
@@ -26,10 +25,10 @@ class ChatsFragment : Fragment(), ChatsPresenter.ChatsDelegate, ContactAdapter.C
 
     private val mPresenter = ChatsPresenter(this)
     private var chats = Hashtable<String, Chat>()
-    private lateinit var adapter: ContactAdapter
+    private lateinit var adapter: ChatAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_chats, container, false)
+        val view = inflater.inflate(R.layout.chats_fragment, container, false)
         setHasOptionsMenu(true)
         return view
     }
@@ -38,10 +37,17 @@ class ChatsFragment : Fragment(), ChatsPresenter.ChatsDelegate, ContactAdapter.C
         super.onViewCreated(view, savedInstanceState)
 
         recyclerViewChats.layoutManager = LinearLayoutManager(context)
-        adapter = ContactAdapter(getDataAsPseudoList(chats), context, this)
+        adapter = ChatAdapter(getDataAsPseudoList(chats), context, this)
         recyclerViewChats.adapter = adapter
 
+        newChat.setOnClickListener { onNewContactPressed() }
+
         mPresenter.getChats()
+    }
+
+    private fun onNewContactPressed() {
+        val intent = Intent(context, ContactsActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onContactPressed(chatId: String) {

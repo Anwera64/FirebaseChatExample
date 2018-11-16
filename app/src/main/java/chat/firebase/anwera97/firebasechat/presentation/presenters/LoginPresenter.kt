@@ -1,4 +1,4 @@
-package chat.firebase.anwera97.firebasechat.Presentation.Presenters
+package chat.firebase.anwera97.firebasechat.presentation.presenters
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth

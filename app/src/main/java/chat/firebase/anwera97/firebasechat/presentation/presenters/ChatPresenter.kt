@@ -1,7 +1,7 @@
-package chat.firebase.anwera97.firebasechat.Presentation.Presenters
+package chat.firebase.anwera97.firebasechat.presentation.presenters
 
 import android.util.Log
-import chat.firebase.anwera97.firebasechat.Data.Message
+import chat.firebase.anwera97.firebasechat.data.Message
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

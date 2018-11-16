@@ -1,4 +1,4 @@
-package chat.firebase.anwera97.firebasechat.Utils
+package chat.firebase.anwera97.firebasechat.utils
 
 import java.text.SimpleDateFormat
 import java.util.*

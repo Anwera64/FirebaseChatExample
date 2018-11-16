@@ -1,15 +1,14 @@
-package chat.firebase.anwera97.firebasechat.Presentation.Adapters
+package chat.firebase.anwera97.firebasechat.presentation.adapters
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import chat.firebase.anwera97.firebasechat.Data.Message
+import chat.firebase.anwera97.firebasechat.data.Message
 import chat.firebase.anwera97.firebasechat.R
-import chat.firebase.anwera97.firebasechat.Utils.DateUtils
-import kotlinx.android.synthetic.main.chat_item_from.view.*
+import chat.firebase.anwera97.firebasechat.utils.DateUtils
+import kotlinx.android.synthetic.main.item_chat_from.view.*
 
 class MessageAdapter(var messages: ArrayList<Message>, private val context: Context, private val ownId: String) :
     RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
@@ -25,7 +24,7 @@ class MessageAdapter(var messages: ArrayList<Message>, private val context: Cont
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): MessageAdapter.ViewHolder {
         return when (p1) {
             0 -> ViewHolder(LayoutInflater.from(context).inflate(R.layout.chat_item_to, p0, false))
-            else -> ViewHolder(LayoutInflater.from(context).inflate(R.layout.chat_item_from, p0, false))
+            else -> ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_chat_from, p0, false))
         }
     }
 
