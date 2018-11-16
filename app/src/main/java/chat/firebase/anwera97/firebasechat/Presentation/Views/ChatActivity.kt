@@ -3,6 +3,7 @@ package chat.firebase.anwera97.firebasechat.Presentation.Views
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
 import android.view.MenuItem
 import chat.firebase.anwera97.firebasechat.Data.Message
 import chat.firebase.anwera97.firebasechat.Presentation.Adapters.MessageAdapter
@@ -31,11 +32,20 @@ class ChatActivity: AppCompatActivity(), ChatPresenter.ChatDelegate {
         chat_recycler_view.adapter = adapter
         scrollToLast()
 
+        send_message_btn.setOnClickListener { sendMessage() }
+
         mPresenter.getMessages()
     }
 
     private fun scrollToLast() {
         chat_recycler_view.scrollToPosition(adapter.itemCount)
+    }
+
+    private fun sendMessage() {
+        val detail = message_detail.text.toString()
+        if (detail.isEmpty()) return
+
+        mPresenter.sendMessage(detail)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -52,7 +62,7 @@ class ChatActivity: AppCompatActivity(), ChatPresenter.ChatDelegate {
         scrollToLast()
     }
 
-    override fun onMessageSent(message: Message) {
-
+    override fun onMessageSent() {
+        message_detail.text.clear()
     }
 }

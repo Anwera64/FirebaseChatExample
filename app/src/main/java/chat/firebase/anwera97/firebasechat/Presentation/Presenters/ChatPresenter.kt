@@ -1,6 +1,5 @@
 package chat.firebase.anwera97.firebasechat.Presentation.Presenters
 
-import android.content.Context
 import android.util.Log
 import chat.firebase.anwera97.firebasechat.Data.Message
 import com.google.firebase.auth.FirebaseAuth
@@ -10,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
 
@@ -18,10 +18,11 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
     //Firebase
     private val db = FirebaseDatabase.getInstance().reference
     private val user = FirebaseAuth.getInstance().currentUser!!
+    private val path = "chats/$chatId/messages"
 
 
     fun getMessages() {
-        db.child("chats/$chatId/messages").addValueEventListener(object : ValueEventListener{
+        db.child(path).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.e(TAG, p0.message, p0.toException())
             }
@@ -41,8 +42,19 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
         })
     }
 
-    fun sendMessage() {
+    fun sendMessage(detail: String) {
+        val uid = UUID.randomUUID().toString()
 
+        db.child("$path/$uid").setValue(messageJSON(detail)).addOnSuccessListener { view.onMessageSent() }
+    }
+
+    fun messageJSON(detail: String): HashMap<String, Any> {
+        val hash = HashMap<String, Any>()
+        hash["detail"] = detail
+        hash["from"] = user.uid
+        hash["time"] = Date().time
+
+        return hash
     }
 
     fun getOwnId(): String {
@@ -52,6 +64,6 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
     interface ChatDelegate {
         fun onMessagesReady(messages: ArrayList<Message>)
 
-        fun onMessageSent(message: Message)
+        fun onMessageSent()
     }
 }
