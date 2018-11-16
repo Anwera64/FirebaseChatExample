@@ -13,4 +13,7 @@
     </string>
     <string name="saved_type">User type</string>
     <string name="shared_preferences">chat.firebase.anwera97.firebasechat</string>
+    <string name="send_message">Mandar</string>
+    <string name="write_here">Escribe aqui</string>
+    <string name="short_lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut hendrerit lacus. Ut non suscipit tellus, sed pharetra tortor. Orci varius natoque penatibus et magnis.</string>
 </resources>
