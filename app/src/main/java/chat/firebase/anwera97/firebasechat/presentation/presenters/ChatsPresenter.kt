@@ -24,8 +24,9 @@ class ChatsPresenter(val view: ChatsDelegate) {
         dbRef.child("users/${currentUser!!.uid}/chats").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
                 p0.children.forEach { chatKeySnap ->
-                    val chatKey = chatKeySnap.value as String
-                    getChat(chatKey)
+                    val chatKey = chatKeySnap.key!!
+                    val contactID = chatKeySnap.value as String
+                    getChat(chatKey,contactID)
                 }
             }
 
@@ -36,7 +37,7 @@ class ChatsPresenter(val view: ChatsDelegate) {
         })
     }
 
-    private fun getChat(key: String) {
+    private fun getChat(key: String, contactID: String) {
         dbRef.child("chats/$key").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.e(TAG, p0.message, p0.toException())
@@ -55,15 +56,7 @@ class ChatsPresenter(val view: ChatsDelegate) {
                 val type = view.obtainType()
 
                 val chat = Chat(p0.key!!, messages)
-                when (type) {
-                    "alumnee" -> {
-                        getContact(p0.child("teacher").value as String, chat)
-                    }
-
-                    "professor" -> {
-                        getContact(p0.child("student").value as String, chat)
-                    }
-                }
+                getContact(contactID, chat)
             }
 
         })

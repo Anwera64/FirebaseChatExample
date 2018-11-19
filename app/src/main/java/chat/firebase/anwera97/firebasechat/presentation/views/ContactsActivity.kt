@@ -26,7 +26,7 @@ class ContactsActivity : AppCompatActivity(), ContactsPresenter.ContactsDelegate
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         recyclerViewContacts.layoutManager = LinearLayoutManager(this)
-        adapter = ContactAdapter(ArrayList(), this)
+        adapter = ContactAdapter(ArrayList(), this, this)
         recyclerViewContacts.adapter = adapter
 
         mPresenter.getContacts()
@@ -52,14 +52,14 @@ class ContactsActivity : AppCompatActivity(), ContactsPresenter.ContactsDelegate
     }
 
     override fun onDestroy() {
-        mPresenter
+        mPresenter.deleteListeners()
         super.onDestroy()
     }
 
     override fun onContactPressed(id: String) {
         val intent = Intent(this, ChatActivity::class.java)
         intent.putExtra("contactID", id)
-        val chatID = UUID.randomUUID()
+        val chatID = UUID.randomUUID().toString()
         intent.putExtra("chatID", chatID)
         startActivity(intent)
     }

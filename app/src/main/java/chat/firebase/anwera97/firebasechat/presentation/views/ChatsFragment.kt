@@ -12,6 +12,7 @@ import chat.firebase.anwera97.firebasechat.data.Chat
 import chat.firebase.anwera97.firebasechat.presentation.adapters.ChatAdapter
 import chat.firebase.anwera97.firebasechat.presentation.presenters.ChatsPresenter
 import chat.firebase.anwera97.firebasechat.R
+import chat.firebase.anwera97.firebasechat.utils.SharedPreferencesUtils
 import kotlinx.android.synthetic.main.chats_fragment.*
 import java.util.*
 
@@ -75,7 +76,10 @@ class ChatsFragment : Fragment(), ChatsPresenter.ChatsDelegate, ChatAdapter.Chat
     }
 
     override fun obtainType(): String {
-        val pref = context!!.getSharedPreferences(getString(R.string.shared_preferences), Context.MODE_PRIVATE)!!
-        return pref.getString(getString(R.string.saved_type), "None")!!
+        return SharedPreferencesUtils.getType(
+            context!!,
+            getString(R.string.shared_preferences),
+            getString(R.string.saved_type)
+        )
     }
 }

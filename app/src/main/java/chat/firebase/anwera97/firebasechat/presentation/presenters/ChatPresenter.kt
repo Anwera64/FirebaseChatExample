@@ -37,18 +37,41 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
                     messages.add(message)
                 }
 
+                messages.sortWith(compareBy { it.date })
                 view.onMessagesReady(messages)
             }
         })
     }
 
+    fun createNewChat(contactId: String) {
+        db.child("chats/$chatId").setValue(chatJSON(contactId))
+        db.child("users/$contactId/chats/$chatId").setValue(user.uid)
+        db.child("users/${user.uid}/chats/$chatId").setValue(contactId)
+    }
+
+    private fun chatJSON(contactId: String): HashMap<String, Any> {
+        val hash = HashMap<String, Any>()
+        when (view.obtainType()) {
+            "alumnee" -> {
+                hash["student"] = user.uid
+                hash["teacher"] = contactId
+            }
+
+            "professor" -> {
+                hash["teacher"] = user.uid
+                hash["student"] = contactId
+            }
+        }
+
+        return hash
+    }
+
     fun sendMessage(detail: String) {
         val uid = UUID.randomUUID().toString()
-
         db.child("$path/$uid").setValue(messageJSON(detail)).addOnSuccessListener { view.onMessageSent() }
     }
 
-    fun messageJSON(detail: String): HashMap<String, Any> {
+    private fun messageJSON(detail: String): HashMap<String, Any> {
         val hash = HashMap<String, Any>()
         hash["detail"] = detail
         hash["from"] = user.uid
@@ -65,5 +88,7 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
         fun onMessagesReady(messages: ArrayList<Message>)
 
         fun onMessageSent()
+
+        fun obtainType(): String
     }
 }
