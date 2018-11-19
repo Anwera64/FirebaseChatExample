@@ -14,11 +14,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/chatbox_left"
-        android:paddingRight="8dp"
         android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:paddingBottom="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView

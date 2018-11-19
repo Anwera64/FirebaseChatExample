@@ -14,7 +14,7 @@ class ContactsPresenter(val view: ContactsDelegate) {
 
     //Firebase
     private val db = FirebaseDatabase.getInstance().reference
-    private val user = FirebaseAuth.getInstance().currentUser!!
+    val user = FirebaseAuth.getInstance().currentUser!!
     private val listeners = ArrayList<ValueEventListener>()
 
     fun getContacts() {

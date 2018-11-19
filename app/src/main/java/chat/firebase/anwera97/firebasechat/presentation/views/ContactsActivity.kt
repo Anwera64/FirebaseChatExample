@@ -59,7 +59,7 @@ class ContactsActivity : AppCompatActivity(), ContactsPresenter.ContactsDelegate
     override fun onContactPressed(id: String) {
         val intent = Intent(this, ChatActivity::class.java)
         intent.putExtra("contactID", id)
-        val chatID = UUID.randomUUID().toString()
+        val chatID = "$id-${mPresenter.user.uid}"
         intent.putExtra("chatID", chatID)
         startActivity(intent)
     }

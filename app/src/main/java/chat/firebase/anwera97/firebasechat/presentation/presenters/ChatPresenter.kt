@@ -44,7 +44,7 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
     }
 
     fun createNewChat(contactId: String) {
-        db.child("chats/$chatId").setValue(chatJSON(contactId))
+        db.child("chats/$chatId").updateChildren(chatJSON(contactId))
         db.child("users/$contactId/chats/$chatId").setValue(user.uid)
         db.child("users/${user.uid}/chats/$chatId").setValue(contactId)
     }
@@ -68,7 +68,7 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
 
     fun sendMessage(detail: String) {
         val uid = UUID.randomUUID().toString()
-        db.child("$path/$uid").setValue(messageJSON(detail)).addOnSuccessListener { view.onMessageSent() }
+        db.child("$path/$uid").setValue(messageJSON(detail))
     }
 
     private fun messageJSON(detail: String): HashMap<String, Any> {
@@ -86,8 +86,6 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
 
     interface ChatDelegate {
         fun onMessagesReady(messages: ArrayList<Message>)
-
-        fun onMessageSent()
 
         fun obtainType(): String
     }

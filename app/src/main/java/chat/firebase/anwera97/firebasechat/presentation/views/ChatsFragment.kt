@@ -74,12 +74,4 @@ class ChatsFragment : Fragment(), ChatsPresenter.ChatsDelegate, ChatAdapter.Chat
         adapter.chats = getDataAsPseudoList(chats)
         adapter.notifyDataSetChanged()
     }
-
-    override fun obtainType(): String {
-        return SharedPreferencesUtils.getType(
-            context!!,
-            getString(R.string.shared_preferences),
-            getString(R.string.saved_type)
-        )
-    }
 }

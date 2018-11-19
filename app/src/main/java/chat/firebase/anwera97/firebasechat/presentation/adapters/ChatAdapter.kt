@@ -27,10 +27,13 @@ class ChatAdapter(
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val chat = chats[p1]!!
         p0.tvName.text = chat.contact.name
-        p0.tvLastText.text = chat.messages.last().detail
         p0.itemView.setOnClickListener {
             view.onContactPressed(chat.id)
         }
+
+        if (chat.messages.isEmpty()) return
+        chat.messages.sortWith(compareBy { it.date })
+        p0.tvLastText.text = chat.messages.last().detail
     }
 
 

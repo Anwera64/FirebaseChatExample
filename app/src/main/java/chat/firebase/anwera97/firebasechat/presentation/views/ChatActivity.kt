@@ -49,6 +49,7 @@ class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate {
         if (detail.isEmpty()) return
 
         mPresenter.sendMessage(detail)
+        message_detail.text.clear()
     }
 
     override fun obtainType(): String {
@@ -71,9 +72,5 @@ class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate {
         adapter.messages = messages
         adapter.notifyDataSetChanged()
         scrollToLast()
-    }
-
-    override fun onMessageSent() {
-        message_detail.text.clear()
     }
 }

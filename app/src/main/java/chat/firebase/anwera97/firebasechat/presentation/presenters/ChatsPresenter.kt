@@ -53,8 +53,6 @@ class ChatsPresenter(val view: ChatsDelegate) {
                     messages.add(message)
                 }
 
-                val type = view.obtainType()
-
                 val chat = Chat(p0.key!!, messages)
                 getContact(contactID, chat)
             }
@@ -81,7 +79,6 @@ class ChatsPresenter(val view: ChatsDelegate) {
 
         fun onChatChanged(updatedChat: Chat)
 
-        fun obtainType(): String
     }
 }
 
