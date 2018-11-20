@@ -20,6 +20,22 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <ImageView
+            android:id="@+id/fileIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
+            android:minWidth="40dp"
+            android:minHeight="40dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_file"
+            android:tint="@color/black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/timestamp"
+            app:layout_constraintTop_toBottomOf="@+id/detail" />
+
         <TextView
             android:id="@+id/detail"
             android:layout_width="wrap_content"
@@ -29,6 +45,20 @@
             android:layout_marginEnd="8dp"
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/short_lorem_ipsum" />
+
+        <ImageView
+            android:id="@+id/imageContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
