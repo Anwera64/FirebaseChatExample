@@ -3,13 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/white_icons">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/ic_logo_ulima" />
+        android:src="@drawable/ic_logo_ulima"
+        android:tint="@color/grey_100" />
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -31,6 +34,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/chat_bar"
         android:layout_below="@id/appbar"
+        android:layout_marginBottom="8dp"
         android:scrollbars="vertical"
         tools:listitem="@layout/item_chat_from" />
 
@@ -39,7 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="8dp"
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:padding="10dp">
@@ -52,8 +55,19 @@
             android:background="@color/white"
             android:hint="@string/write_here"
             android:inputType="text"
+            android:maxLines="4"
             android:padding="5dp"
             android:textAppearance="?android:textAppearanceSmall" />
+
+        <ImageView
+            android:id="@+id/file_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@color/white"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_clip"
+            android:tint="@color/grey_400" />
 
         <ImageView
             android:id="@+id/send_message_btn"

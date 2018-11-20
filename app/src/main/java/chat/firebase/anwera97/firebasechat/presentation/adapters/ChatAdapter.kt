@@ -28,7 +28,7 @@ class ChatAdapter(
         val chat = chats[p1]!!
         p0.tvName.text = chat.contact.name
         p0.itemView.setOnClickListener {
-            view.onContactPressed(chat.id)
+            view.onContactPressed(chat.id, chat.contact.name)
         }
 
         if (chat.messages.isEmpty()) return
@@ -43,6 +43,6 @@ class ChatAdapter(
     }
 
     interface ChatAdapterDelegate {
-        fun onContactPressed(chatId: String)
+        fun onContactPressed(chatId: String, name: String)
     }
 }

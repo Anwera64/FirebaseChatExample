@@ -9,7 +9,7 @@ import chat.firebase.anwera97.firebasechat.R
 import chat.firebase.anwera97.firebasechat.data.Contact
 import chat.firebase.anwera97.firebasechat.presentation.adapters.ContactAdapter
 import chat.firebase.anwera97.firebasechat.presentation.presenters.ContactsPresenter
-import kotlinx.android.synthetic.main.contacts_activity.*
+import kotlinx.android.synthetic.main.activity_contacts.*
 import java.util.*
 
 class ContactsActivity : AppCompatActivity(), ContactsPresenter.ContactsDelegate,
@@ -21,7 +21,7 @@ class ContactsActivity : AppCompatActivity(), ContactsPresenter.ContactsDelegate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.contacts_activity)
+        setContentView(R.layout.activity_contacts)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
