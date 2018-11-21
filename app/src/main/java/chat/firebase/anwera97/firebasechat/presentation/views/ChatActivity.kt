@@ -1,10 +1,18 @@
 package chat.firebase.anwera97.firebasechat.presentation.views
 
+import android.Manifest
 import android.app.Activity
 import android.content.ContentResolver
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.OpenableColumns
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityCompat.startActivityForResult
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -16,9 +24,14 @@ import chat.firebase.anwera97.firebasechat.presentation.adapters.MessageAdapter
 import chat.firebase.anwera97.firebasechat.presentation.presenters.ChatPresenter
 import chat.firebase.anwera97.firebasechat.utils.SharedPreferencesUtils
 import kotlinx.android.synthetic.main.activity_chat.*
+import java.io.File
+import java.io.File.separator
+import android.support.v4.content.FileProvider
 
 
-class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate {
+
+
+class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate, MessageAdapter.MessageAdapterDelegate {
 
     private lateinit var mPresenter: ChatPresenter
     private lateinit var adapter: MessageAdapter
@@ -45,18 +58,25 @@ class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate {
         }
 
         chat_recycler_view.layoutManager = LinearLayoutManager(this)
-        adapter = MessageAdapter(ArrayList(), this, mPresenter.getOwnId())
+        adapter = MessageAdapter(ArrayList(), this, this, mPresenter.getOwnId())
         chat_recycler_view.adapter = adapter
-        scrollToLast()
 
         send_message_btn.setOnClickListener { sendMessage() }
         file_button.setOnClickListener { addFile() }
 
         mPresenter.getMessages()
+        if (adapter.itemCount > 0) scrollToLast()
     }
 
     private fun scrollToLast() {
         chat_recycler_view.scrollToPosition(adapter.itemCount - 1)
+    }
+
+    override fun openFile(path: String, type: String) {
+        if (!checkForWritingPermissions()) return
+        val internalPath =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + separator
+        mPresenter.downloadFile(path, internalPath, type)
     }
 
     private fun addFile() {
@@ -73,6 +93,16 @@ class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate {
         startActivityForResult(intent, READ_REQUEST_CODE)
     }
 
+    private fun checkForWritingPermissions(): Boolean {
+        val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
+            return false
+        }
+
+        return true
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code
         // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
@@ -85,11 +115,32 @@ class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate {
             // Pull that URI using resultData.getData().
             data?.data?.also { uri ->
                 defineFileType(uri)?.let {
-                    mPresenter.uploadFile(uri, it)
+                    mPresenter.uploadFile(uri, it, getFileName(uri))
                 }
             }
         }
     }
+
+    private fun getFileName(uri: Uri): String {
+        // The query, since it only applies to a single document, will only return
+        // one row. There's no need to filter, sort, or select fields, since we want
+        // all fields for one document.
+        val cursor: Cursor? = contentResolver.query(uri, null, null, null, null, null)
+
+        cursor?.use {
+            // moveToFirst() returns false if the cursor has 0 rows.  Very handy for
+            // "if there's anything to look at, look at it" conditionals.
+            if (it.moveToFirst()) {
+
+                // Note it's called "Display Name".  This is
+                // provider-specific, and might not necessarily be the file name.
+                return it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+            }
+        }
+
+        return "File"
+    }
+
 
     private fun defineFileType(uri: Uri): String? {
         val mimeType: String?
@@ -136,5 +187,22 @@ class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate {
         adapter.messages = messages
         adapter.notifyDataSetChanged()
         scrollToLast()
+    }
+
+    override fun onFileDownloaded(name: String, type: String) {
+        val file = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + separator +
+                    name
+        )
+        val path = FileProvider.getUriForFile(this,
+            "chat.firebase.anwera97.firebasechat",
+            file
+        )
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        intent.setDataAndType(path, type)
+        startActivity(intent)
     }
 }

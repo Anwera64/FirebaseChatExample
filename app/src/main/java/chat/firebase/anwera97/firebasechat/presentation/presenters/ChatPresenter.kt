@@ -1,8 +1,9 @@
 package chat.firebase.anwera97.firebasechat.presentation.presenters
 
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.support.v4.content.ContextCompat.checkSelfPermission
 import android.util.Log
-import chat.firebase.anwera97.firebasechat.R.id.detail
 import chat.firebase.anwera97.firebasechat.data.Message
 import chat.firebase.anwera97.firebasechat.data.StorageFile
 import com.google.firebase.auth.FirebaseAuth
@@ -85,8 +86,19 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
         return hash
     }
 
-    fun uploadFile(file: Uri, type: String) {
-        val filePath = "$path/${file.lastPathSegment}"
+    fun downloadFile(firebaseStoragePath: String, internalStorageFile: String, type: String) {
+        val ref = storage.child(firebaseStoragePath)
+        val intoFile = File(internalStorageFile+ref.name)
+        ref.getFile(intoFile)
+            .addOnSuccessListener {
+                view.onFileDownloaded(it.storage.name, type)
+            }.addOnFailureListener {
+                Log.e(TAG, it.localizedMessage, it.cause)
+            }
+    }
+
+    fun uploadFile(file: Uri, type: String, name: String) {
+        val filePath = "$path/${UUID.randomUUID()}"
         val riversRef = storage.child(filePath)
         val uploadTask = riversRef.putFile(file)
 
@@ -95,9 +107,7 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
             // Handle unsuccessful uploads
             Log.e(TAG, it.localizedMessage, it.cause)
         }.addOnSuccessListener {
-            var detail = "Archivo"
-            file.lastPathSegment.let { detail = file.lastPathSegment!! }
-            sendFileMessage(detail, filePath, type)
+            sendFileMessage(name, filePath, type)
         }
     }
 
@@ -139,5 +149,7 @@ class ChatPresenter(val view: ChatDelegate, private val chatId: String) {
         fun onMessagesReady(messages: ArrayList<Message>)
 
         fun obtainType(): String
+
+        fun onFileDownloaded(name: String, type: String)
     }
 }

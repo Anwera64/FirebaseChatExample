@@ -2,6 +2,8 @@ package chat.firebase.anwera97.firebasechat.presentation.adapters
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +14,12 @@ import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.item_chat_from.view.*
 
-class MessageAdapter(var messages: ArrayList<Message>, private val context: Context, private val ownId: String) :
+class MessageAdapter(
+    var messages: ArrayList<Message>,
+    private val context: Context,
+    private val view: MessageAdapterDelegate,
+    private val ownId: String
+) :
     RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
 
     private val storage = FirebaseStorage.getInstance().reference
@@ -42,20 +49,33 @@ class MessageAdapter(var messages: ArrayList<Message>, private val context: Cont
 
         p0.timestamp.text = DateUtils.format(DateUtils.hourAndMinute, message.date)
 
-        message.file?.let {
-            when (it.type.split("/").first()) {
+        message.file?.let { file ->
+            when (file.type.split("/").first()) {
                 "image" -> {
                     Glide.with(context)
-                        .load(storage.child(it.path))
+                        .load(storage.child(file.path))
                         .into(p0.image)
                     p0.detail.visibility = View.GONE
                     p0.image.visibility = View.VISIBLE
                 }
                 else -> {
                     p0.fileIcon.visibility = View.VISIBLE
+                    val underlinedDetail = SpannableString(message.detail)
+                    underlinedDetail.apply {
+                        setSpan(UnderlineSpan(), 0, this.length, 0)
+                    }
+                    p0.detail.text = underlinedDetail
+
+                    p0.itemView.setOnClickListener { view.openFile(file.path, file.type) }
                 }
             }
         }
+    }
+
+    override fun onViewRecycled(holder: ViewHolder) {
+        holder.fileIcon.visibility = View.GONE
+        holder.image.visibility = View.GONE
+        holder.image.setImageResource(android.R.color.transparent)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -65,4 +85,8 @@ class MessageAdapter(var messages: ArrayList<Message>, private val context: Cont
         var image = view.imageContent!!
     }
 
+
+    interface MessageAdapterDelegate {
+        fun openFile(path: String, type: String)
+    }
 }
