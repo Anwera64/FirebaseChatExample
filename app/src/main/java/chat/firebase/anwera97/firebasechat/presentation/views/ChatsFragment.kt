@@ -7,10 +7,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import chat.firebase.anwera97.firebasechat.R
 import chat.firebase.anwera97.firebasechat.data.Chat
 import chat.firebase.anwera97.firebasechat.presentation.adapters.ChatAdapter
 import chat.firebase.anwera97.firebasechat.presentation.presenters.ChatsPresenter
-import chat.firebase.anwera97.firebasechat.R
 import kotlinx.android.synthetic.main.fragment_chats.*
 import java.util.*
 
@@ -41,6 +41,7 @@ class ChatsFragment : Fragment(), ChatsPresenter.ChatsDelegate, ChatAdapter.Chat
 
         newChat.setOnClickListener { onNewContactPressed() }
 
+        progressBar.visibility = View.VISIBLE
         mPresenter.getChats()
     }
 
@@ -72,5 +73,6 @@ class ChatsFragment : Fragment(), ChatsPresenter.ChatsDelegate, ChatAdapter.Chat
         chats[updatedChat.id] = updatedChat
         adapter.chats = getDataAsPseudoList(chats)
         adapter.notifyDataSetChanged()
+        progressBar.visibility = View.GONE
     }
 }

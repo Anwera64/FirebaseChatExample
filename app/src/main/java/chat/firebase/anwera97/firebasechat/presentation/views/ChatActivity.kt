@@ -11,12 +11,13 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.OpenableColumns
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.MenuItem
+import android.view.View
+import android.view.WindowManager
 import android.webkit.MimeTypeMap
 import chat.firebase.anwera97.firebasechat.R
 import chat.firebase.anwera97.firebasechat.data.Message
@@ -26,9 +27,6 @@ import chat.firebase.anwera97.firebasechat.utils.SharedPreferencesUtils
 import kotlinx.android.synthetic.main.activity_chat.*
 import java.io.File
 import java.io.File.separator
-import android.support.v4.content.FileProvider
-
-
 
 
 class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate, MessageAdapter.MessageAdapterDelegate {
@@ -76,6 +74,12 @@ class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate, MessageAda
         if (!checkForWritingPermissions()) return
         val internalPath =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + separator
+        progressBar.visibility = View.VISIBLE
+        blocking_view.visibility = View.VISIBLE
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
         mPresenter.downloadFile(path, internalPath, type)
     }
 
@@ -95,7 +99,7 @@ class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate, MessageAda
 
     private fun checkForWritingPermissions(): Boolean {
         val permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (permission != PackageManager.PERMISSION_GRANTED) {
+        if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
             return false
         }
@@ -194,13 +198,17 @@ class ChatActivity : AppCompatActivity(), ChatPresenter.ChatDelegate, MessageAda
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).path + separator +
                     name
         )
-        val path = FileProvider.getUriForFile(this,
+        val path = FileProvider.getUriForFile(
+            this,
             "chat.firebase.anwera97.firebasechat",
             file
         )
 
+        progressBar.visibility = View.GONE
+        blocking_view.visibility = View.GONE
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+
         val intent = Intent(Intent.ACTION_VIEW)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         intent.setDataAndType(path, type)
         startActivity(intent)
